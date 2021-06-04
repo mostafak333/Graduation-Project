@@ -1,6 +1,9 @@
 //import 'dart:html';
-
+import 'package:flutter/cupertino.dart';
+import 'package:voice_code/components/rounded_card.dart';
 import 'package:flutter/material.dart';
+import 'package:voice_code/screens/SplashScreen.dart';
+import 'package:voice_code/components/menu.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:voice_code/constants.dart';
 
@@ -16,208 +19,280 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
 
+  bool isCollapsed = false;
   @override
   Widget build(BuildContext context) {
     final double kwidth = ( MediaQuery.of(context).size.width);
     final double kheight = ( MediaQuery.of(context).size.height);
 
     return Scaffold(
-      backgroundColor: const Color(0xff222223),
+
       resizeToAvoidBottomInset: false,
       body: Stack(
-        children: <Widget>[
-          Transform.translate(
-            offset: Offset( 0 , -0.2*kheight),
-            child: Container(
-             width: kwidth,
-              height: kheight,
-              decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
-                color: const Color(0xcc292929),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0x21000000),
-                    offset: Offset(0, 3),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 25 , horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(Icons.menu_outlined , size: 45,),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                        child: Icon(Icons.person , size: 35, color: Color(0xff222223),)),
-                  ],
-                ),
+        children:[
+          menu(context),
+        AnimatedPositioned(
+          duration: Duration(milliseconds: 200),
+          top: isCollapsed ? 10 : 0,
+          right: isCollapsed ? - 0.4*kwidth : 0,
+          left: isCollapsed ? 0.4*kwidth : 0,
+          bottom: isCollapsed ? -10 : 0,
+          child: Material(
+            color: const Color(0xff222223),
+            child: Stack(
 
-                SizedBox(
-                  height: 10,
-                ),
+              children: <Widget>[
 
-                Container(
-
+                Transform.translate(
+                  offset: Offset( 0 , -0.2*kheight),
+                  child: Container(
+                    width: kwidth,
+                    height: kheight,
                     decoration: BoxDecoration(
-                      color: Color(0xFF2B2B2B),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius:
+                      BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
+                      color: const Color(0xcc292929),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black54,
-                          spreadRadius: -2,
-                          blurRadius: 4,
-                          offset: Offset(0,1.5),
-                        )
-                      ]
+                          color: const Color(0x21000000),
+                          offset: Offset(0, 3),
+                          blurRadius: 6,
+                        ),
+                      ],
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            onChanged: (value){},
-                            //style: TextStyle(backgroundColor: Colors.white),
-                            decoration: InputDecoration(
-                              hintText: 'Search',
-                              hintStyle: TextStyle(color: Colors.white54),
-                              contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 15, right: 15 , top: 22 , bottom: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                              onTap: (){
+                                setState(() {
+                                  isCollapsed = !isCollapsed;
+                                });
+                              },
+                              child: Icon(Icons.menu_outlined , size: 50,)
+                          ),
+                          Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(100),
                               ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide( color: Colors.transparent, width: 1.0),
-                                borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                              child: Icon(Icons.face , size: 30, color: Color(0xff222223),)),
+                        ],
+                      ),
+
+
+                      Container(
+
+                          decoration: BoxDecoration(
+                              color: Color(0xFF2B2B2B),
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black54,
+                                  spreadRadius: -2,
+                                  blurRadius: 4,
+                                  offset: Offset(0,1.5),
+                                )
+                              ]
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  onChanged: (value){},
+                                  //style: TextStyle(backgroundColor: Colors.white),
+                                  decoration: InputDecoration(
+                                    hintText: 'Search',
+                                    hintStyle: TextStyle(color: Colors.white54),
+                                    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide( color: Colors.transparent, width: 1.0),
+                                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide:
+                                      BorderSide(color: Colors.transparent, width: 2.0),
+                                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                                    ),
+                                  ),
+                                ),
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Colors.transparent, width: 2.0),
-                                borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                              Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  child: Icon(Icons.mic)
                               ),
+                            ],
+                          )
+                      ),
+
+
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Language',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white60,
+                              fontFamily: 'arial',
                             ),
                           ),
+
+                          Row(
+                            children: [
+                              RoundedCard(
+                                onTap: (){
+
+                                },
+                                cardText: 'C',
+                                imagePath: 'assets/cicon.png',
+                              ),
+                              RoundedCard(
+                                  onTap: (){
+                                    Navigator.pushNamed(context, SplashScreen.id);
+                                  },
+                                  imagePath: 'assets/javaicon.png',
+                                  cardText: 'Java'
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              RoundedCard(
+                                  onTap: (){
+
+                                  },
+                                  imagePath: 'assets/phpicon.png',
+                                  cardText: 'PHP'
+                              ),
+                              RoundedCard(
+                                  onTap: (){},
+                                  imagePath: 'assets/pyicon.png',
+                                  cardText: 'Python'
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(
+                        height: 5,
+                      ),
+
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Recent Language',
+                            style: TextStyle(fontWeight: FontWeight.bold , fontSize: 18 , color: Colors.white60),
+                          ),
+
+                          Row(
+                            children: [
+                              Container(width: kwidth*0.33, child: RoundedCard(onTap: (){}, imagePath: 'assets/pyicon.png', cardText: 'Python' , imageheight: 35)),
+                              // RoundedCard(onTap: (){}, imagePath: 'assets/pyicon.png', cardText: 'Python' , imageheight: 35,),
+                              // RoundedCard(onTap: (){}, imagePath: 'assets/pyicon.png', cardText: 'Python' , imageheight: 35,),
+                            ],
+                          ),
+
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Color(0xFF2B2B2B),
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black54,
+                                    spreadRadius: -2,
+                                    blurRadius: 4,
+                                    offset: Offset(0,1.5),
+                                  )
+                                ]
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 2),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Icon(
+                                      Icons.settings
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(100),
+                                        color: Colors.black38
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(5),
+                                      child: Icon(
+                                        Icons.home,
+                                        size: 30,
+                                        color: Colors.deepPurpleAccent,
+                                      ),
+                                    ),
+                                  ),
+                                  Icon(
+                                      Icons.favorite
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+
+
+                    ],
+                  ),
+                ),
+                AnimatedPositioned(
+                  duration: Duration(milliseconds: 500),
+                  right: 0,
+                  left: 0,
+                  top: isCollapsed? - 0.4*kheight : kheight,
+                  bottom: isCollapsed? - 0.4*kheight: kheight,
+                  child: InkWell(
+                    onTap: (){
+                      setState(() {
+                        isCollapsed = !isCollapsed;
+                      });
+                    },
+                    child: Transform.translate(
+                      offset: Offset( 0 ,0),
+                      child: Container(
+                        width: kwidth,
+                        height: kheight,
+                        decoration: BoxDecoration(
+                          color: const Color(0xcc292929),
                         ),
-                         Padding(
-                           padding: EdgeInsets.symmetric(horizontal: 10),
-                             child: Icon(Icons.mic)
-                         ),
-                      ],
-                    )
-                  ),
 
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                    'Language',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white60,
-                    fontFamily: 'arial',
+                      ),
+                    ),
                   ),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-
-                Row(
-                  children: [
-                    RoundedCard(
-                      onTap: (){
-
-                      },
-                      cardText: 'C',
-                      imagePath: 'assets/cicon.png',
-                    ),
-                    RoundedCard(
-                        onTap: (){
-                          Navigator.pushNamed(context, SignIn.id);
-                        },
-                        imagePath: 'assets/javaicon.png',
-                        cardText: 'Java'
-                    ),
-                  ],
-                ),
-
-                Row(
-                  children: [
-                    RoundedCard(
-                        onTap: (){
-
-                        },
-                        imagePath: 'assets/phpicon.png',
-                        cardText: 'PHP'
-                    ),
-                    RoundedCard(
-                        onTap: (){},
-                        imagePath: 'assets/pyicon.png',
-                        cardText: 'Python'
-                    ),
-                  ],
-                ),
-
-
               ],
             ),
-          )
+          ),
+        ),
+
         ],
+
       ),
     );
   }
 }
 
-class RoundedCard extends StatelessWidget {
-  const RoundedCard({@required this.onTap , @required this.imagePath , @required this.cardText}) ;
-  final Function onTap;
-  final String imagePath;
-  final String cardText;
 
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-        child: GestureDetector(
-            onTap: this.onTap,
-            child : Container(
-              margin: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: Color(0xFF282829),
-                  borderRadius: BorderRadius.circular(18),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black54,
-                      spreadRadius: -1,
-                      blurRadius: 7,
-                      offset: Offset( 0 , 2),
-                    )
-                  ]
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 20 , horizontal: 15),
-                child: Column(
-                  children: [
-                    Image(
-                      image: AssetImage(this.imagePath),
-                      height: 90,
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Text(this.cardText),
-                  ],
-                ),
-              ),
-            )
-        ));
-  }
-}
