@@ -19,3 +19,18 @@ const kRoundedTextField =  InputDecoration(
     borderRadius: BorderRadius.all(Radius.circular(32.0)),
   ),
 );
+
+//
+// class ImagesPathes{
+//   var _instance = null;
+//   ImagesPathes(){
+//     _instance = new ImagesPathes();
+//   }
+//   ImagesPathes getInstance(){
+//     if(_instance !=  null ) {
+//       return _instance;
+//     }else{
+//       ImagesPathes();
+//     }
+//   }
+// }

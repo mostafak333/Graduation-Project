@@ -2,11 +2,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:voice_code/components/rounded_card.dart';
 import 'package:flutter/material.dart';
-import 'package:voice_code/screens/SplashScreen.dart';
+import 'package:voice_code/screens/LoadingScreen.dart';
 import 'package:voice_code/components/menu.dart';
+import 'CreateFileScreen.dart';
+import 'package:voice_code/models/language.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:voice_code/constants.dart';
-
 import 'SignIn.dart';
 
 class Home extends StatefulWidget {
@@ -16,17 +17,40 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
 
 
+class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   bool isCollapsed = false;
+
+  AnimationController controller;
+  Animation animation;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    controller = AnimationController(duration: Duration(seconds: 1), vsync: this);
+    controller.addListener(() {
+      setState(() {
+
+      });
+    }) ;
+  }
+  @override
+  void dispose() {
+    controller.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final double kwidth = ( MediaQuery.of(context).size.width);
     final double kheight = ( MediaQuery.of(context).size.height);
 
     return Scaffold(
-
       resizeToAvoidBottomInset: false,
       body: Stack(
         children:[
@@ -79,16 +103,17 @@ class _HomeState extends State<Home> {
                               },
                               child: Icon(Icons.menu_outlined , size: 50,)
                           ),
-                          Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                              child: Icon(Icons.face , size: 30, color: Color(0xff222223),)),
+                          Hero(
+                            tag: 'profile Image',
+                            child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
+                                child: Icon(Icons.face , size: 30, color: Color(0xff222223),)),
+                          ),
                         ],
                       ),
-
-
                       Container(
 
                           decoration: BoxDecoration(
@@ -155,17 +180,25 @@ class _HomeState extends State<Home> {
                             children: [
                               RoundedCard(
                                 onTap: (){
-
+                                  Navigator.push(context,
+                                      MaterialPageRoute( builder:  (context) => CreateFileScreen(
+                                        choosedLan: c,
+                                      ))
+                                  );
                                 },
-                                cardText: 'C',
-                                imagePath: 'assets/cicon.png',
+                                cardText: c.name,
+                                imagePath: c.imagepath,
                               ),
                               RoundedCard(
                                   onTap: (){
-                                    Navigator.pushNamed(context, SplashScreen.id);
+                                    Navigator.push(context,
+                                        MaterialPageRoute( builder:  (context) => CreateFileScreen(
+                                          choosedLan: java,
+                                        ))
+                                    );
                                   },
-                                  imagePath: 'assets/javaicon.png',
-                                  cardText: 'Java'
+                                  imagePath: java.imagepath,
+                                  cardText: java.name
                               ),
                             ],
                           ),
@@ -174,15 +207,26 @@ class _HomeState extends State<Home> {
                             children: [
                               RoundedCard(
                                   onTap: (){
-
+                                    Navigator.push(context,
+                                        MaterialPageRoute( builder:  (context) => CreateFileScreen(
+                                          choosedLan: php,
+                                        ))
+                                    );
                                   },
-                                  imagePath: 'assets/phpicon.png',
-                                  cardText: 'PHP'
+                                  imagePath: php.imagepath,
+                                  cardText: php.name
                               ),
                               RoundedCard(
-                                  onTap: (){},
-                                  imagePath: 'assets/pyicon.png',
-                                  cardText: 'Python'
+                                  onTap: (){
+//                                    Navigator.pushNamed(context,CreateFileScreen.id , arguments:  {python.name} );
+                                  Navigator.push(context,
+                                  MaterialPageRoute( builder:  (context) => CreateFileScreen(
+                                    choosedLan: python,
+                                  ))
+                                  );
+                                  },
+                                  imagePath: python.imagepath,
+                                  cardText: python.name
                               ),
                             ],
                           ),
@@ -287,7 +331,6 @@ class _HomeState extends State<Home> {
             ),
           ),
         ),
-
         ],
 
       ),
