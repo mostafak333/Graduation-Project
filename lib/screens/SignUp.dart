@@ -229,26 +229,27 @@ class _SignUpState extends State<SignUp> {
                                   backgroundColor: MaterialStateProperty.all(Colors.deepPurple),
                                 ),
                                 onPressed: () async {
+                                  setState(() => loading = true);
                                   if(_formKey.currentState.validate()) {
-                                    setState(() => loading = true);
                                     _auth.registerWithEmailAndPassword(_email, _password).then((result) async => {
                                       if(result != null){
                                         await _userService.add(getUserData(result.uid)).then((userDetails) => {
                                           if(userDetails != null){
                                             setState(() {
+                                              loading = false;
                                              Navigator.pushNamed(context, Home.id);
-                                             loading = false;
                                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Welcome $_username')));
                                             })
                                           }
                                         })
                                   }else{
                                         setState((){
-                                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please enter valid information')));
                                           loading = false;
+                                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please enter valid information')));
                                         })
                                   }
                                     });
+
                                   } //Navigator.pushNamed(context, Home.id);
                                 },
                                 child: Container(

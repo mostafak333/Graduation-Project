@@ -7,6 +7,7 @@ import 'package:voice_code/screens/SignUp.dart';
 import 'package:voice_code/screens/LoadingScreen.dart';
 import 'package:voice_code/screens/CreateFileScreen.dart';
 import 'package:voice_code/screens/LoadingScreen.dart';
+import 'package:voice_code/screens/FileTap.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
          SignUp.id : (context) => SignUp(),
           LoadingScreen.id : (context) => LoadingScreen(),
           CreateFileScreen.id : (context) => CreateFileScreen(),
+          FileTap.id : (context) => FileTap()
 
         },
     );

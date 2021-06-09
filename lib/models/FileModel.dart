@@ -23,8 +23,8 @@ class FileModel {
   static Future createAppDir() async{
     dynamic directory = await ExtStorage.getExternalStorageDirectory();
     Directory dir =  new Directory('$directory/projects');
-    print(dir);
-    print('monako');
+   // print(dir);
+   // print('monako');
     if(await dir.exists()){
       return dir;
     }else {

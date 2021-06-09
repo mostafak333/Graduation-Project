@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:voice_code/models/language.dart';
 import 'package:voice_code/screens/FileTap.dart';
 import 'package:voice_code/models/FileModel.dart';
+import 'package:voice_code/models/GlotApi.dart';
 
 
 class CreateFileScreen extends StatefulWidget {
@@ -20,7 +21,7 @@ class _CreateFileScreenState extends State<CreateFileScreen> {
   @override
   Widget build(BuildContext context) {
   //  final dynamic selectedLang = ModalRoute.of(context).settings.arguments;
-     selectedLanguage = new Language(widget.choosedLan.name, widget.choosedLan.imagepath, 'txt' , widget.choosedLan.welcomeMessage);
+     selectedLanguage = new Language(widget.choosedLan.name, widget.choosedLan.imagepath, widget.choosedLan.extension , widget.choosedLan.welcomeMessage);
     final double kwidth = ( MediaQuery.of(context).size.width);
     final double kheight = ( MediaQuery.of(context).size.height);
     return Scaffold(
@@ -68,6 +69,7 @@ class _CreateFileScreenState extends State<CreateFileScreen> {
                      String content = '';
                      FileModel newfile =  FileModel( filename , selectedLanguage.extension);
                      print(selectedLanguage.welcomeMessage);
+
                      await newfile.prepareFile(selectedLanguage.welcomeMessage);
                      content = await newfile.readCounter();
                      Navigator.push(context, MaterialPageRoute(builder: (context) => FileTap(

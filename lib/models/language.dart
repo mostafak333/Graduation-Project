@@ -11,14 +11,14 @@ Language python = new Language(
     'print("Hello World!")\n'
 );
 Language java = new Language(
-    'Java', 'assets/javaicon.png', 'java' ,
-  'class Main {\n\tpublic static void main(String[] args) {\n\t\t System.out.println("Hello World!");\n\t}}'
+    'C++', 'assets/javaicon.png', 'cpp' ,
+  '#include <iostream>\nusing namespace std;\n\n int main() {\n\tcount<< "Hello World!";\n\treturn 0;\n}'
 );
 Language php = new Language(
     'PHP', 'assets/phpicon.png', 'php' ,
-    '<?php\necho "Hello World\n";'
+    '<?php\necho "Hello World";\n'
 );
 Language c = new Language(
     'C', 'assets/cicon.png', 'c' ,
-  '#include <stdio.h>\nint main(void) {\n\tprintf("Hello World!\n");\t\nreturn 0;\n}'
+  '#include <stdio.h>\nint main(void) {\n\tprintf("Hello World!");\n\t\nreturn 0;\n}'
 );

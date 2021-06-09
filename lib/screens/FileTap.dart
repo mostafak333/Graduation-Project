@@ -1,28 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:voice_code/models/FileModel.dart';
 import 'package:voice_code/models/language.dart';
 import 'package:voice_code/components/menu.dart';
+import 'dart:convert';
+import 'package:voice_code/models/GlotApi.dart';
 
 
 class FileTap extends StatefulWidget {
+  static const id = 'FileTap';
   String filecontent;
   final Language selectedLan;
   final FileModel newfile;
   FileTap({this.filecontent,@required this.selectedLan , @required this.newfile});
-
   @override
   _FileTapState createState() => _FileTapState();
 }
 
+
+
 class _FileTapState extends State<FileTap> {
   bool isCollapsed = false;
   String textFieldValue = '';
+  String _response = 'Run to show Result';
+  String _error = '';
+  GlotApi api ;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    textFieldValue = widget.selectedLan.welcomeMessage;
+    api = new GlotApi(widget.selectedLan.name.toLowerCase());
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final double kwidth = ( MediaQuery.of(context).size.width);
     final double kheight = ( MediaQuery.of(context).size.height);
     final Language selectedLan = new Language(widget.selectedLan.name, widget.selectedLan.imagepath , widget.selectedLan.extension,widget.selectedLan.welcomeMessage);
     final FileModel newfile = new FileModel(widget.newfile.fileName,widget.newfile.fileExtension);
+
     String content = widget.filecontent.toString();
 
     return Scaffold(
@@ -74,7 +93,7 @@ class _FileTapState extends State<FileTap> {
                               child: Text('${newfile.fileName}.${newfile.fileExtension}' , style: TextStyle(color: Colors.black))
                           ),
                           TextFormField(
-                            maxLines: 18,
+                            maxLines: 15,
                             keyboardType: TextInputType.multiline,
                             initialValue: '$content',
                             onChanged: (value){
@@ -104,8 +123,21 @@ class _FileTapState extends State<FileTap> {
                                       icon: Icon(Icons.not_started_outlined),
                                       label: Text('Run'),
                                       foregroundColor: Colors.white,
-                                      onPressed: (){
+                                      onPressed: ()  {
                                         newfile.writeCounter(textFieldValue);
+                                        print(selectedLan.name);
+                                        api.filedata('${newfile.fileName}.${newfile.fileExtension}', textFieldValue);
+                                        setState(() {
+                                          api.getResponse().then((value) => {
+                                            setState((){
+                                              print(value);
+                                              _response = jsonDecode(value)['stdout'];
+                                              _error = jsonDecode(value)['stderr'] + " " + jsonDecode(value)['error'];
+
+                                            })
+                                          });
+                                        });
+                                        //print(_response);
                                       }
                                       ),
 
@@ -113,7 +145,8 @@ class _FileTapState extends State<FileTap> {
                               ),
                             ),
                           ),
-                          Text('result'),
+                          Text(_response == '' || _response == null ? 'Loading' : _response),
+                          Text(_error == '' || _error == null ? '' : _error ),
                         ],
                       ),
                     ),

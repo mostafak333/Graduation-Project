@@ -33,14 +33,6 @@ class _SignInState extends State<SignIn> {
   void initState(){
     // TODO: implement initState
     super.initState();
-    Permission.storage.request().then((val) {
-     Permission.storage.status.then(
-         (val) => {
-           setState((){
-             print(val);
-           })
-         });
-    });
     //createAppFolder();
   }
 
