@@ -2,6 +2,8 @@
 import 'package:ext_storage/ext_storage.dart';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
+
 class FileModel {
   final fileName ;
   final fileExtension;
@@ -10,6 +12,7 @@ class FileModel {
 
   FileModel(this.fileName,this.fileExtension){
     this._internalPath =   'projects/$fileName.$fileExtension';
+    print('called');
     FileModel.createAppDir();
     this.createFile();
   }
@@ -30,6 +33,15 @@ class FileModel {
     }else {
       return dir.create();
     }
+  }
+
+  static Future getAllFiles(String fileExtension) async{
+    dynamic directory = await ExtStorage.getExternalStorageDirectory();
+    Directory dir =  new Directory('$directory/projects');
+    List files =  dir.listSync();
+    List<String> fileWithSelectedExe;
+   return files.where((element) => element.toString().endsWith('.$fileExtension\'')).toList();
+     //return files;
   }
 
 

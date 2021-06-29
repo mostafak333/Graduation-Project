@@ -8,6 +8,8 @@ import 'package:voice_code/screens/LoadingScreen.dart';
 import 'package:voice_code/screens/CreateFileScreen.dart';
 import 'package:voice_code/screens/LoadingScreen.dart';
 import 'package:voice_code/screens/FileTap.dart';
+import 'package:voice_code/screens/ExistingFilesScreen.dart';
+
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,15 +27,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
       // home: SignIn(),
-      initialRoute: LoadingScreen.id,
+      initialRoute: Home.id,
         routes: {
-        LoadingScreen.id :(context) => LoadingScreen(),
-          SignIn.id : (BuildContext context) =>  SignIn(),
-          Home.id: (BuildContext context) => Home(),
-         SignUp.id : (context) => SignUp(),
-          LoadingScreen.id : (context) => LoadingScreen(),
-          CreateFileScreen.id : (context) => CreateFileScreen(),
-          FileTap.id : (context) => FileTap()
+          LoadingScreen.id        : (context) => LoadingScreen(),
+          SignIn.id               : (context) => SignIn(),
+          Home.id                 : (context) => Home(),
+          SignUp.id               : (context) => SignUp(),
+          LoadingScreen.id        : (context) => LoadingScreen(),
+          CreateFileScreen.id     : (context) => CreateFileScreen(),
+          FileTap.id              : (context) => FileTap(),
+          ExistingFilesScreen.id  : (context) => ExistingFilesScreen(),
 
         },
     );

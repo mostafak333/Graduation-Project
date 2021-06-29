@@ -235,7 +235,7 @@ class _SignInState extends State<SignIn> {
                                   setState(() => loading = true);
                                   dynamic result = await _auth.signInWithEmailAndPassword(email, password);
                                   if (result != null) {
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Welcome')));
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Welcome ')));
                                     Navigator.pushNamed(context, Home.id);
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Invalid Email or Password')));

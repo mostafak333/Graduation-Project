@@ -17,75 +17,98 @@ class _CreateFileScreenState extends State<CreateFileScreen> {
   bool isCollapsed = false;
   Language selectedLanguage;
   String filename;
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    selectedLanguage = new Language(
+        widget.choosedLan.name,
+        widget.choosedLan.imagepath,
+        widget.choosedLan.extension,
+        widget.choosedLan.welcomeMessage
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-  //  final dynamic selectedLang = ModalRoute.of(context).settings.arguments;
-     selectedLanguage = new Language(widget.choosedLan.name, widget.choosedLan.imagepath, widget.choosedLan.extension , widget.choosedLan.welcomeMessage);
     final double kwidth = ( MediaQuery.of(context).size.width);
     final double kheight = ( MediaQuery.of(context).size.height);
-    return Scaffold(
-      appBar: AppBar(leading: GestureDetector(
-          child: Icon(Icons.arrow_back_outlined),
-        onTap: (){
-            Navigator.pop(context);
-        },
-      )),
-      //resizeToAvoidBottomInset: false,
 
+    return Scaffold(
+      appBar: AppBar(backgroundColor: Colors.black12,),
       body: Material(
         color: const Color(0xff222223),
         child: Padding(
           padding: EdgeInsets.all(50),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Flexible(
-                child: Hero(
-                  tag: 'profile Image',
-                  child: Container(
-                    height: 180,
-                    child: FittedBox(child: Icon(Icons.face , color: Color(0xffffffff),))
-            ),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Flexible(
+                  child: Hero(
+                    tag: 'profile Image',
+                    child: Container(
+                      height: 180,
+                      child: FittedBox(child: Icon(Icons.face , color: Color(0xffffffff),))
+              ),
+                  ),
                 ),
-              ),
+                Row(
 
-
-              TextFormField(
-                   onChanged: (value){
-                     filename = value;
-                   },
-                   decoration: InputDecoration(
-
-                     hintText: 'Name your file here without .${selectedLanguage.extension}',
+                  children: [
+                    Flexible(
+                      child: TextFormField(
+                        validator: (value){
+                          return value.isEmpty ? 'please name your File' : value.indexOf(' ') >= 0 ? 'file Name Ca\'n contain spaces' : null;
+                        },
+                           onChanged: (value){
+                             filename = value;
+                           },
+                           decoration: InputDecoration(
+                             hintText: 'Name your file here without .${selectedLanguage.extension}',
+                           ),
+                         ),
+                    ),
+                    Center(
+                      child: Text('.${selectedLanguage.extension}' , style: TextStyle(
+                        color: Colors.lightBlueAccent,
+                        fontSize:22,
+                      ),),
+                    )
+                  ],
+                ),
+                   SizedBox(
+                     height: 20,
                    ),
-                 ),
-                 SizedBox(
-                   height: 20,
-                 ),
-                ElevatedButton(
-                   onPressed: () async{
-                     String content = '';
-                     FileModel newfile =  FileModel( filename , selectedLanguage.extension);
-                     print(selectedLanguage.welcomeMessage);
+                  ElevatedButton(
+                     onPressed: () async{
+                      if(_formKey.currentState.validate()){
+                        String content = '';
+                        FileModel newfile =  FileModel( filename , selectedLanguage.extension);
+                        print(selectedLanguage.welcomeMessage);
 
-                     await newfile.prepareFile(selectedLanguage.welcomeMessage);
-                     content = await newfile.readCounter();
-                     Navigator.push(context, MaterialPageRoute(builder: (context) => FileTap(
-                       selectedLan: selectedLanguage,
-                       filecontent: content,
-                       newfile: newfile,
-                     )));
+                        await newfile.prepareFile(selectedLanguage.welcomeMessage);
+                        content = await newfile.readCounter();
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => FileTap(
+                          selectedLan: selectedLanguage,
+                          filecontent: content,
+                          newfile: newfile,
+                        )));
 
-                   },
-                   child: Text('Create & Run ${selectedLanguage.name} Project'),
-                 ),
-              SizedBox(
-                height: 20,
-              ),
+                      }
+                     },
+                     child: Text('Create & Run ${selectedLanguage.name} Project'),
+                   ),
+                SizedBox(
+                  height: 20,
+                ),
 
-            ],
+              ],
+            ),
           ),
         ),
       ),
