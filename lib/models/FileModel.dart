@@ -88,6 +88,4 @@ class FileModel {
   Future prepareFile(String welcomeMessage) async{
      return await writeCounter(welcomeMessage);
   }
-
-
 }

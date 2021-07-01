@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
       // home: SignIn(),
-      initialRoute: Home.id,
+      initialRoute: LoadingScreen.id,
         routes: {
           LoadingScreen.id        : (context) => LoadingScreen(),
           SignIn.id               : (context) => SignIn(),

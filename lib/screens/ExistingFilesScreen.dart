@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:voice_code/models/language.dart';
 import 'package:voice_code/models/FileModel.dart';
+import 'package:voice_code/screens/CreateFileScreen.dart';
 
 class ExistingFilesScreen extends StatefulWidget {
   static const String id = 'ExistingFilesScreen';
@@ -21,7 +22,7 @@ class _ExistingFilesScreenState extends State<ExistingFilesScreen> {
     print(widget.choosedLan.extension);
     FileModel.getAllFiles(widget.choosedLan.extension.toString()).then(
         (val) => {
-          files = val;
+          files = val
         }
     );
 
@@ -37,7 +38,7 @@ class _ExistingFilesScreenState extends State<ExistingFilesScreen> {
             ListView(
               padding: EdgeInsets.symmetric(vertical: 10,),
               children: [
-
+                Text('OOps!? ... there is no projects to show ,start coding and create file'),
               ],
             ),
             Padding(
@@ -46,7 +47,11 @@ class _ExistingFilesScreenState extends State<ExistingFilesScreen> {
                 alignment: Alignment.bottomRight,
                 child: ElevatedButton(
                   onPressed: (){
-                  },
+                    Navigator.push(context,
+                        MaterialPageRoute( builder:  (context) => CreateFileScreen(
+                          choosedLan: selectedLan,
+                        ))
+                    );                  },
                   child: Text('Create A new File.${selectedLan.extension}'),
                 ),
               ),

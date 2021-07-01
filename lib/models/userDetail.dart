@@ -8,15 +8,10 @@ class UserDetail {
       this.username,
       this.email,
       });
-
-
   UserDetail.fromMap(Map snapshot, String id):
-
     userId = id ?? '',
     username = snapshot['username'] ?? '',
     email = snapshot['email'] ?? '';
-
-
   toJson() {
     return {
       "userId": userId,
