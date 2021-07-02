@@ -1,3 +1,5 @@
+// @dart=2.9
+import 'package:alan_voice/alan_voice.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -6,12 +8,9 @@ import 'package:voice_code/services/auth.dart';
 import 'package:voice_code/services/user_service.dart';
 import 'package:voice_code/constants.dart';
 import 'Home.dart';
-import 'package:adobe_xd/page_link.dart';
 import 'SignIn.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SignUp extends StatefulWidget {
-
   static const String id = 'SignUp';
 
   @override
@@ -19,6 +18,39 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  _SignUpState() {
+    void _navigateTo(String route) {
+      switch (route) {
+        case "signin":
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SignIn()),
+          );
+          break;
+        case "back":
+          Navigator.pop(context);
+          break;
+        default:
+          print("Unknown screen: $route");
+      }
+    }
+
+    void _handleCommand(Map<String, dynamic> command) {
+      switch (command["command"]) {
+        case "navigation":
+          _navigateTo(command["route"]);
+          break;
+        default:
+          debugPrint("Unknown command: $command");
+      }
+    }
+
+    AlanVoice.addButton(
+        "d61e3094cd60a896d7167f21bce9b4472e956eca572e1d8b807a3e2338fdd0dc/stage",
+        buttonAlign: AlanVoice.BUTTON_ALIGN_LEFT);
+    AlanVoice.callbacks.add((command) => _handleCommand(command.data));
+    AlanVoice.playText("mustafa");
+  }
   final AuthService _auth = AuthService();
 
   UserService _userService = new UserService();
@@ -26,7 +58,6 @@ class _SignUpState extends State<SignUp> {
   final _formKey = new GlobalKey<FormState>();
 
   String _username = "";
-  String _confirmPassword = "";
   String _email = "";
   String _password = "";
   String error = '';
@@ -38,239 +69,263 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-
-    final double kwidth = ( MediaQuery.of(context).size.width);
-    final double kheight = ( MediaQuery.of(context).size.height);
+    final double kwidth = (MediaQuery.of(context).size.width);
+    final double kheight = (MediaQuery.of(context).size.height);
     return Scaffold(
       //backgroundColor: const Color(0xffffffff),
       //resizeToAvoidBottomInset: false,
-      body:ModalProgressHUD(
+      body: ModalProgressHUD(
         inAsyncCall: loading,
         child: Stack(
-            children: <Widget>[
-              Container(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                color: const Color(0xff222223),
+              ),
+            ),
+            Transform.translate(
+              offset: Offset(0, 0),
+              child: Container(
+                width: (kwidth) * 0.65,
                 decoration: BoxDecoration(
-                  color: const Color(0xff222223),
+                  borderRadius:
+                      BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
+                  color: const Color(0xcc292929),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0x21000000),
+                      offset: Offset(0, 3),
+                      blurRadius: 6,
+                    ),
+                  ],
                 ),
               ),
-              Transform.translate(
-                offset: Offset(0, 0),
+            ),
+            Transform.translate(
+              offset: Offset((kwidth * 0.35), 0.0),
+              child: Container(
+                width: (kwidth * 0.65),
+                decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
+                  color: const Color(0xcc292929),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0x21000000),
+                      offset: Offset(0, 3),
+                      blurRadius: 6,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Transform.translate(
+              offset: Offset(100, 100),
+              child: Image.asset(
+                'assets/GP LOGO111.png',
+                width: 170.0,
+                height: 50.0,
+                fit: BoxFit.cover,
+              ),
+            ),
+            SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.only(right: 20, left: 20, top: 180),
                 child: Container(
-                  width: ( kwidth ) * 0.65 ,
+                  height: kheight - 190,
                   decoration: BoxDecoration(
-                    borderRadius:
-                    BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
-                    color: const Color(0xcc292929),
+                    borderRadius: BorderRadius.circular(21.0),
+                    color: const Color(0xff212121),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0x21000000),
+                        color: const Color(0x29000000),
                         offset: Offset(0, 3),
                         blurRadius: 6,
                       ),
                     ],
                   ),
-                ),
-              ),
-              Transform.translate(
-                offset: Offset(( kwidth * 0.35), 0.0),
-                child: Container(
-                  width: ( kwidth * 0.65),
-                  decoration: BoxDecoration(
-                    borderRadius:
-                    BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
-                    color: const Color(0xcc292929),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0x21000000),
-                        offset: Offset(0, 3),
-                        blurRadius: 6,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Transform.translate(
-                offset: Offset(100,100),
-                child: Image.asset(
-                  'assets/GP LOGO111.png',
-                  width: 170.0,
-                  height: 50.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.only(right: 20 , left: 20, top : 180),
-                    child: Container(
-                      height: kheight - 190,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(21.0),
-                        color: const Color(0xff212121),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0x29000000),
-                            offset: Offset(0, 3),
-                            blurRadius: 6,
-                          ),
-                        ],
-                      ),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                            children:[
-                              Padding(
-                                padding: EdgeInsets.only(top: 15),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-
-                                    Container(
-                                      width: 150,
-                                      height: 40,
-                                      decoration:  BoxDecoration(
-                                        color: Colors.black45,
-                                        border: Border.all(color: Colors.white10 , width: 2),
-                                        borderRadius: BorderRadius.only(topLeft: Radius.circular(25) , bottomLeft: Radius.circular(25)),
-                                      ),
-                                      child: MaterialButton(
-                                        clipBehavior: Clip.antiAlias,
-                                        onPressed: (){
-                                          Navigator.pushNamed(context, SignIn.id);
-                                        },
-                                        child: Text(
-                                            'SignIn',
-                                            style:TextStyle(
-                                                color: Colors.white60
-                                            )
-
-                                        ),
-                                      ),
-                                    ),
-
-                                    Container(
-                                      width: 150,
-                                      height: 42,
-                                      decoration:BoxDecoration(
-                                        color: Colors.black,
-                                        border: Border.all(color: Colors.white70 , width: 2),
-                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(25) , topRight: Radius.circular(25)),
-                                      ),
-                                      child: MaterialButton(
-                                        onPressed: (){
-                                          //Navigator.pushNamed(context, SignUp.id);
-                                        },
-                                        child: Text(
-                                            'Signup',
-                                            style:TextStyle(
-                                                color: Colors.white
-                                            )
-
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 150,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: Colors.black45,
+                                border:
+                                    Border.all(color: Colors.white10, width: 2),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(25),
+                                    bottomLeft: Radius.circular(25)),
                               ),
-                              SizedBox(
-                                height: 20.0,
-                              ),
-
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10 , vertical: 2.5),
-                                child: TextFormField(
-                                  validator: (value) => value.isEmpty || value == null ? 'please enter a valid username' : null,
-                                  onChanged: (value){
-                                    setState(() => _username = value);
-                                  },
-                                  decoration: kRoundedTextField.copyWith(hintText: 'Username' , prefixIcon: Icon(Icons.portrait)),
-
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10 , vertical: 2.5),
-                                child: TextFormField(
-                                  keyboardType: TextInputType.emailAddress,
-                                  validator: (value) => EmailValidator.validate(value) ? null : 'Please Enter a Valid Email' ,
-                                  onChanged: (value){
-                                    setState(() => _email = value);
-                                  },
-                                  decoration: kRoundedTextField.copyWith(hintText: 'Enter your Email' , prefixIcon: Icon(Icons.email)),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10 , vertical: 2.5),
-                                child: TextFormField(
-                                  obscureText: true,
-                                  validator: (value) => value.isEmpty || value == null ? 'please enter your password' : null,
-                                  onChanged: (value){
-                                    setState(() =>_password = value);
-                                  },
-                                  decoration: kRoundedTextField.copyWith(hintText: 'Enter your Password' , prefixIcon: Icon(Icons.vpn_key)),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10 , vertical: 2.5),
-                                child: TextFormField(
-                                  obscureText: true,
-                                  validator: (value) => value != _password ? 'Please enter Correct confirmation Password' : null,
-                                  onChanged: (value){
-
-                                  },
-                                  decoration: kRoundedTextField.copyWith(hintText: 'Confirm your Password' , prefixIcon: Icon(Icons.https)),
-                                ),
-                              ),
-
-                              SizedBox(
-                                height: 40.0,
-                              ),
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(Colors.deepPurple),
-                                ),
-                                onPressed: () async {
-                                  setState(() => loading = true);
-                                  if(_formKey.currentState.validate()) {
-                                    _auth.registerWithEmailAndPassword(_email, _password).then((result) async => {
-                                      if(result != null){
-                                        await _userService.add(getUserData(result.uid)).then((userDetails) => {
-                                          if(userDetails != null){
-                                            setState(() {
-                                              loading = false;
-                                             Navigator.pushNamed(context, Home.id);
-                                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Welcome $_username')));
-                                            })
-                                          }
-                                        })
-                                  }else{
-                                        setState((){
-                                          loading = false;
-                                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Please enter valid information')));
-                                        })
-                                  }
-                                    });
-
-                                  } //Navigator.pushNamed(context, Home.id);
+                              child: MaterialButton(
+                                clipBehavior: Clip.antiAlias,
+                                onPressed: () {
+                                  Navigator.pushNamed(context, SignIn.id);
                                 },
-                                child: Container(
-                                  width: 100,
-                                  child: Center(
-                                    child: Text('SignUp',
-                                      style: TextStyle(color: Colors.white70 , fontSize: 20 , ),
-                                    ),
-                                  ),
-                                ),
-
+                                child: Text('SignIn',
+                                    style: TextStyle(color: Colors.white60)),
                               ),
-                            ]
+                            ),
+                            Container(
+                              width: 150,
+                              height: 42,
+                              decoration: BoxDecoration(
+                                color: Colors.black,
+                                border:
+                                    Border.all(color: Colors.white70, width: 2),
+                                borderRadius: BorderRadius.only(
+                                    bottomRight: Radius.circular(25),
+                                    topRight: Radius.circular(25)),
+                              ),
+                              child: MaterialButton(
+                                onPressed: () {
+                                  //Navigator.pushNamed(context, SignUp.id);
+                                },
+                                child: Text('Signup',
+                                    style: TextStyle(color: Colors.white)),
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                    ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 2.5),
+                        child: TextFormField(
+                          validator: (value) => value.isEmpty || value == null
+                              ? 'please enter a valid username'
+                              : null,
+                          onChanged: (value) {
+                            setState(() => _username = value);
+                          },
+                          decoration: kRoundedTextField.copyWith(
+                              hintText: 'Username',
+                              prefixIcon: Icon(Icons.portrait)),
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 2.5),
+                        child: TextFormField(
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) => EmailValidator.validate(value)
+                              ? null
+                              : 'Please Enter a Valid Email',
+                          onChanged: (value) {
+                            setState(() => _email = value);
+                          },
+                          decoration: kRoundedTextField.copyWith(
+                              hintText: 'Enter your Email',
+                              prefixIcon: Icon(Icons.email)),
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 2.5),
+                        child: TextFormField(
+                          obscureText: true,
+                          validator: (value) => value.isEmpty || value == null
+                              ? 'please enter your password'
+                              : null,
+                          onChanged: (value) {
+                            setState(() => _password = value);
+                          },
+                          decoration: kRoundedTextField.copyWith(
+                              hintText: 'Enter your Password',
+                              prefixIcon: Icon(Icons.vpn_key)),
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 2.5),
+                        child: TextFormField(
+                          obscureText: true,
+                          validator: (value) => value != _password
+                              ? 'Please enter Correct confirmation Password'
+                              : null,
+                          onChanged: (value) {},
+                          decoration: kRoundedTextField.copyWith(
+                              hintText: 'Confirm your Password',
+                              prefixIcon: Icon(Icons.https)),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 40.0,
+                      ),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.deepPurple),
+                        ),
+                        onPressed: () async {
+                          setState(() => loading = true);
+                          if (_formKey.currentState.validate()) {
+                            _auth
+                                .registerWithEmailAndPassword(_email, _password)
+                                .then((result) async => {
+                                      if (result != null)
+                                        {
+                                          await _userService
+                                              .add(getUserData(result.uid))
+                                              .then((userDetails) => {
+                                                    if (userDetails != null)
+                                                      {
+                                                        setState(() {
+                                                          loading = false;
+                                                          Navigator.pushNamed(
+                                                              context, Home.id);
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(SnackBar(
+                                                                  content: Text(
+                                                                      'Welcome $_username')));
+                                                        })
+                                                      }
+                                                  })
+                                        }
+                                      else
+                                        {
+                                          setState(() {
+                                            loading = false;
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                                    content: Text(
+                                                        'Please enter valid information')));
+                                          })
+                                        }
+                                    });
+                          } //Navigator.pushNamed(context, Home.id);
+                        },
+                        child: Container(
+                          width: 100,
+                          child: Center(
+                            child: Text(
+                              'SignUp',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ]),
                   ),
                 ),
-
-            ],
-          ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

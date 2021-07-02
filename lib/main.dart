@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:voice_code/models/language.dart';
 import 'package:voice_code/screens/Home.dart';
 import 'package:voice_code/screens/SignIn.dart';
 import 'package:voice_code/screens/SignUp.dart';
 import 'package:voice_code/screens/LoadingScreen.dart';
 import 'package:voice_code/screens/CreateFileScreen.dart';
-import 'package:voice_code/screens/LoadingScreen.dart';
 import 'package:voice_code/screens/FileTap.dart';
 import 'package:voice_code/screens/ExistingFilesScreen.dart';
 
-
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   // await Permission.storage.status;
@@ -28,17 +25,16 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // home: SignIn(),
       initialRoute: LoadingScreen.id,
-        routes: {
-          LoadingScreen.id        : (context) => LoadingScreen(),
-          SignIn.id               : (context) => SignIn(),
-          Home.id                 : (context) => Home(),
-          SignUp.id               : (context) => SignUp(),
-          LoadingScreen.id        : (context) => LoadingScreen(),
-          CreateFileScreen.id     : (context) => CreateFileScreen(),
-          FileTap.id              : (context) => FileTap(),
-          ExistingFilesScreen.id  : (context) => ExistingFilesScreen(),
-
-        },
+      routes: {
+        LoadingScreen.id: (context) => LoadingScreen(),
+        SignIn.id: (context) => SignIn(),
+        Home.id: (context) => Home(),
+        SignUp.id: (context) => SignUp(),
+        LoadingScreen.id: (context) => LoadingScreen(),
+        CreateFileScreen.id: (context) => CreateFileScreen(),
+        FileTap.id: (context) => FileTap(),
+        ExistingFilesScreen.id: (context) => ExistingFilesScreen(),
+      },
     );
   }
 }
