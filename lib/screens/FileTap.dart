@@ -5,6 +5,7 @@ import 'package:voice_code/models/FileModel.dart';
 import 'package:voice_code/models/language.dart';
 import 'dart:convert';
 import 'package:voice_code/models/GlotApi.dart';
+import '../Api/alan.dart' as alan;
 
 class FileTap extends StatefulWidget {
   static const id = 'FileTap';
@@ -18,8 +19,13 @@ class FileTap extends StatefulWidget {
 }
 
 class _FileTapState extends State<FileTap> {
+  dynamic dataCode;
+  dynamic comeCode = "swwwwwwwwwwwwwwwwwwwww";
+  dynamic oldCode = " ";
+  dynamic textFieldValue = '';
   _FileTapState() {
     void pressRun() {
+      print(textFieldValue + "sssssssssssssssssss");
       newfile.writeCounter(textFieldValue);
       print(selectedLan.name);
       api.filedata(
@@ -53,20 +59,27 @@ class _FileTapState extends State<FileTap> {
         case "press":
           _pressKey(command["route"]);
           break;
+        case "writeinitvar":
+          dataCode = command["id"]["value"];
+          break;
+        case "printv":
+          setState(() {
+            comeCode = command["id"];
+            print(comeCode + ">>>>>>>>>>>>>>>>>>>>");
+            textFieldValue = textFieldValue + comeCode + "\n";
+            print("oooooooooooo $textFieldValue ooooooooooooooooo");
+          });
+          break;
         default:
           debugPrint("Unknown command: $command");
       }
     }
 
-    AlanVoice.addButton(
-        "d61e3094cd60a896d7167f21bce9b4472e956eca572e1d8b807a3e2338fdd0dc/stage",
-        buttonAlign: AlanVoice.BUTTON_ALIGN_LEFT);
+    AlanVoice.addButton(alan.key, buttonAlign: AlanVoice.BUTTON_ALIGN_LEFT);
     AlanVoice.callbacks.add((command) => _handleCommand(command.data));
-    AlanVoice.playText("mustafa");
   }
 
   bool isCollapsed = false;
-  String textFieldValue = '';
   String _response = 'Run to show Result';
   String _error = '';
   String content = '';
@@ -76,7 +89,6 @@ class _FileTapState extends State<FileTap> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     textFieldValue = widget.selectedLan.welcomeMessage;
     api = new GlotApi(widget.selectedLan.name.toLowerCase());
@@ -117,10 +129,13 @@ class _FileTapState extends State<FileTap> {
                       child: Text(
                           '${newfile.fileName}.${newfile.fileExtension}',
                           style: TextStyle(color: Colors.black))),
+
                   TextFormField(
                     maxLines: 15,
                     keyboardType: TextInputType.multiline,
-                    initialValue: '$content',
+                    controller: TextEditingController(
+                      text: textFieldValue,
+                    ),
                     onChanged: (value) {
                       setState(() {
                         textFieldValue = value;
@@ -150,7 +165,9 @@ class _FileTapState extends State<FileTap> {
                               label: Text('Run'),
                               foregroundColor: Colors.white,
                               onPressed: () {
-                                newfile.writeCounter(textFieldValue);
+                                print(
+                                    "$textFieldValue pppppppppppppppppppppppp");
+                                newfile.writeCounter(oldCode);
                                 print(selectedLan.name);
                                 api.filedata(
                                     '${newfile.fileName}.${newfile.fileExtension}',

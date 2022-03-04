@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:voice_code/components/menu.dart';
 import 'package:voice_code/screens/ExistingFilesScreen.dart';
 import 'package:voice_code/models/language.dart';
+import '../Api/alan.dart' as alan;
 
 class Home extends StatefulWidget {
   static const String id = 'Home';
@@ -21,13 +22,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           context,
           MaterialPageRoute(
               builder: (context) => ExistingFilesScreen(
-                    choosedLan: c,
+                    choosedLan: php,
                   )));
     }
 
     void _pressKey(String route) {
       switch (route) {
-        case "c":
+        case "php":
           pressLanguage();
           break;
         default:
@@ -45,11 +46,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       }
     }
 
-    AlanVoice.addButton(
-        "d61e3094cd60a896d7167f21bce9b4472e956eca572e1d8b807a3e2338fdd0dc/stage",
-        buttonAlign: AlanVoice.BUTTON_ALIGN_LEFT);
+    AlanVoice.addButton(alan.key, buttonAlign: AlanVoice.BUTTON_ALIGN_LEFT);
     AlanVoice.callbacks.add((command) => _handleCommand(command.data));
-    AlanVoice.playText("mustafa");
   }
 
   bool isCollapsed = false;
@@ -59,7 +57,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     controller =
@@ -72,7 +69,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     controller.dispose();
-    // TODO: implement dispose
     super.dispose();
   }
 

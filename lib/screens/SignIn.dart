@@ -8,7 +8,7 @@ import 'package:voice_code/services/auth.dart';
 import 'Home.dart';
 import 'SignUp.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-// import 'package:ext_storage/ext_storage.dart';
+import '../Api/alan.dart' as alan;
 
 class SignIn extends StatefulWidget {
   static const String id = 'SignIn';
@@ -19,6 +19,9 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   dynamic datta = "oooooooooooooooooooooooooooooooo";
   dynamic zr = "ssssss";
+  dynamic alanemail = 'mina@gmail.com';
+  dynamic alanpassword = '123456';
+
   _SignInState() {
     void _navigateTo(String route) {
       switch (route) {
@@ -28,19 +31,17 @@ class _SignInState extends State<SignIn> {
             MaterialPageRoute(builder: (context) => SignUp()),
           );
           break;
-        case "back":
-          Navigator.pop(context);
-          break;
         default:
           print("Unknown screen: $route");
       }
     }
 
     void _pressLogin() async {
+      print('$alanpassword ==============================');
       if (_formKey.currentState.validate()) {
         setState(() => loading = true);
         dynamic result =
-            await _auth.signInWithEmailAndPassword(email, password);
+            await _auth.signInWithEmailAndPassword(alanemail, alanpassword);
         if (result != null) {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text('Welcome ')));
@@ -49,20 +50,8 @@ class _SignInState extends State<SignIn> {
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Invalid Email or Password')));
         }
-        //print('hello');
-        setState(() => loading = false);
-      }
-    }
 
-    void _pressKey(String route) {
-      switch (route) {
-        case "login":
-          print(">>>>>>>>>>start");
-          _pressLogin();
-          print(">>>>>>>>>>end");
-          break;
-        default:
-          print("Unknown screen: $route");
+        setState(() => loading = false);
       }
     }
 
@@ -71,47 +60,45 @@ class _SignInState extends State<SignIn> {
         case "navigation":
           _navigateTo(command["route"]);
           break;
-        case "press":
-          _pressKey(command["login"]);
+        case "login":
+          _pressLogin();
           break;
         case "write":
           print(command["id"]["value"]);
-          datta = command["id"]["value"];
+          setState(() {
+            alanemail = command['id']['value'];
+            print('$alanemail eeeeeeeeeeeee');
+          });
           print("//////////////////////" + datta);
+          break;
+        case "password":
+          print(command["id"]["value"]);
+          setState(() {
+            alanpassword =
+                command['id']['value'].replaceAll(new RegExp(r"\s+"), "");
+            print('$alanpassword pppppppppppppppppppppppppppp');
+          });
+
           break;
         default:
           debugPrint("Unknown command: $command");
       }
     }
 
-    AlanVoice.addButton(
-        "d61e3094cd60a896d7167f21bce9b4472e956eca572e1d8b807a3e2338fdd0dc/stage",
-        buttonAlign: AlanVoice.BUTTON_ALIGN_LEFT);
+    AlanVoice.addButton(alan.key, buttonAlign: AlanVoice.BUTTON_ALIGN_LEFT);
+
     AlanVoice.callbacks.add((command) => _handleCommand(command.data));
-    AlanVoice.playText("mustafa");
   }
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    //createAppFolder();
   }
 
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
-
-  //double height =;
-
-  String email = '';
-  String password = '';
-  String error = '';
-
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      email = datta;
-    });
     final double kwidth = (MediaQuery.of(context).size.width);
     final double kheight = (MediaQuery.of(context).size.height);
     return Scaffold(
@@ -246,13 +233,12 @@ class _SignInState extends State<SignIn> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 10, vertical: 2.5),
                           child: TextFormField(
-                            keyboardType: TextInputType.emailAddress,
+                            controller: TextEditingController(
+                              text: alanemail,
+                            ),
                             validator: (value) => EmailValidator.validate(value)
                                 ? null
                                 : 'Please Enter a Valid Email',
-                            onChanged: (value) {
-                              setState(() => email = datta);
-                            },
                             decoration: kRoundedTextField.copyWith(
                                 hintText: 'Enter your Email',
                                 prefixIcon: Icon(Icons.email)),
@@ -262,13 +248,13 @@ class _SignInState extends State<SignIn> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 10, vertical: 2.5),
                           child: TextFormField(
+                            controller: TextEditingController(
+                                text: alanpassword.replaceAll(
+                                    new RegExp(r"\s+"), "")),
                             obscureText: true,
                             validator: (value) => value.isEmpty || value == null
                                 ? 'please enter your password'
                                 : null,
-                            onChanged: (value) {
-                              setState(() => password = value);
-                            },
                             decoration: kRoundedTextField.copyWith(
                                 hintText: 'Enter your Password',
                                 prefixIcon: Icon(Icons.vpn_key)),
@@ -283,13 +269,6 @@ class _SignInState extends State<SignIn> {
                                   style: TextStyle(color: Colors.white)),
                               Text('Remember Me!',
                                   style: TextStyle(color: Colors.white)),
-                              ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      zr = datta;
-                                    });
-                                  },
-                                  child: Text('$zr'))
                             ],
                           ),
                         ),
@@ -302,10 +281,13 @@ class _SignInState extends State<SignIn> {
                                 MaterialStateProperty.all(Colors.white),
                           ),
                           onPressed: () async {
+                            print(
+                                '$alanpassword ==============================');
                             if (_formKey.currentState.validate()) {
                               setState(() => loading = true);
-                              dynamic result = await _auth
-                                  .signInWithEmailAndPassword(email, password);
+                              dynamic result =
+                                  await _auth.signInWithEmailAndPassword(
+                                      alanemail, alanpassword);
                               if (result != null) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(content: Text('Welcome ')));
@@ -316,7 +298,6 @@ class _SignInState extends State<SignIn> {
                                         content:
                                             Text('Invalid Email or Password')));
                               }
-                              //print('hello');
                               setState(() => loading = false);
                             }
                           },
@@ -339,8 +320,6 @@ class _SignInState extends State<SignIn> {
                 ),
               ),
             ),
-
-            //paste here
           ],
         ),
       ),

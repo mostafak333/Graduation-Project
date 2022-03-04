@@ -1,5 +1,3 @@
-// @dart=2.9
-import 'package:alan_voice/alan_voice.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -18,39 +16,6 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  _SignUpState() {
-    void _navigateTo(String route) {
-      switch (route) {
-        case "signin":
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => SignIn()),
-          );
-          break;
-        case "back":
-          Navigator.pop(context);
-          break;
-        default:
-          print("Unknown screen: $route");
-      }
-    }
-
-    void _handleCommand(Map<String, dynamic> command) {
-      switch (command["command"]) {
-        case "navigation":
-          _navigateTo(command["route"]);
-          break;
-        default:
-          debugPrint("Unknown command: $command");
-      }
-    }
-
-    AlanVoice.addButton(
-        "d61e3094cd60a896d7167f21bce9b4472e956eca572e1d8b807a3e2338fdd0dc/stage",
-        buttonAlign: AlanVoice.BUTTON_ALIGN_LEFT);
-    AlanVoice.callbacks.add((command) => _handleCommand(command.data));
-    AlanVoice.playText("mustafa");
-  }
   final AuthService _auth = AuthService();
 
   UserService _userService = new UserService();
